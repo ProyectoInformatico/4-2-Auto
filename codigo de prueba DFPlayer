@@ -1,0 +1,42 @@
+
+#include <SoftwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
+
+SoftwareSerial sonido(10, 11);
+DFRobotDFPlayerMini reproductor;
+
+char opcion;
+
+void setup() {
+  Serial.begin(9600);
+  sonido.begin(9600);
+
+ Serial.println("Probando sonido...");
+
+  if (reproductor.begin(sonido)) {
+    reproductor.volume(20);
+
+    Serial.println("DFPlayer conectado");
+    Serial.println("A = Arranque");
+    Serial.println("B = Aceleracion");
+    Serial.println("C = Bocina");
+  } else {
+    Serial.println("Error al conectar DFPlayer");
+  }
+}
+
+void loop() {
+  if (Serial.available()) {
+    opcion = Serial.read();
+
+    if (opcion == 'A' || opcion == 'a') {
+      reproductor.playMp3Folder(1);
+    }
+    else if (opcion == 'B' || opcion == 'b') {
+      reproductor.playMp3Folder(2);
+    }
+    else if (opcion == 'C' || opcion == 'c') {
+      reproductor.playMp3Folder(3);
+    }
+  }
+}
